@@ -44,6 +44,21 @@ sliderInput("number_range",label = h3("Choose the number ranges"),min = 500, max
 
 Row
 -----------------------------------------------------------------------
+### Number of orders in one department
+```{r bar,message=FALSE}
+renderPlotly({
+instacart %>% 
+  count(department, aisle, aisle_id) %>%
+  filter(department == input$department_choice,
+         n %in% input$number_range[1]:input$number_range[2]) %>%
+  mutate(order_count = n,
+         aisle = factor(aisle),
+         aisle = fct_reorder(aisle, n),
+         text_label = str_c("aisle id:", aisle_id, "\nDepartment: ", department)) %>%
+  plot_ly(x = ~ aisle, y = ~ order_count, color = ~ aisle, type = "bar", text = ~text_label)
+})
+
+```
 
 
 
@@ -72,6 +87,22 @@ instacart %>%
 })
 ```
 
+###Distribution of order hour of day by aisles in one department
+```{r Distri}
+renderPlotly({
+distr_order_hour = 
+  instacart %>% 
+  group_by(department, aisle, aisle_id, order_hour_of_day) %>%
+  count() %>%
+  filter(department == input$department_choice) %>%
+  mutate(order_count = n) %>%
+  ggplot(aes(x = order_hour_of_day, y = order_count, color = aisle)) +
+  geom_point() +
+  geom_line()
+
+ggplotly(distr_order_hour)
+})
+```
 
 
 
