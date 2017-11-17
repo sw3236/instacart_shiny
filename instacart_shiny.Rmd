@@ -19,7 +19,7 @@ library(shiny)
 
 
 ```{r read_p1,message=FALSE}
-instacart = read_csv("./data/instacart_train_data.csv.zip")
+instacart = read_csv("../data/instacart_train_data.csv.zip")
 ```
 
 
